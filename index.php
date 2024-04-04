@@ -327,8 +327,11 @@ $business_officer=get_business_officer($uid);
         <div class="tab">
             <h3>Legal Disclosures</h3>
             <p>Please review all of the terms & conditions.</p>
-            <div style="border: 1px solid;">
-                <?php include_once('legal_disclosure.php') ?>
+            <div style="border: 1px solid;" id="disclosure1">
+                <?php include_once('legal_disclosure1.php') ?>
+            </div>
+            <div style="border: 1px solid; display:none;" id="disclosure2">
+                <?php include_once('legal_disclosure2.php') ?>
             </div>
         </div>   
          <!-- End Step-6 Legal Disclosures -->       
@@ -363,6 +366,16 @@ $business_officer=get_business_officer($uid);
             document.getElementById("prevBtn").style.display = "inline";
         }
         if (n == (x.length - 1)) {
+            var bType = document.getElementById("businessTypeId").value;
+            if(bType == 'llc' || bType == 'partnership'){
+                $("#disclosure1").show();
+                $("#disclosure2").hide();
+            }else if(bType == 'c_corporation' || bType == 's_corporation'){
+                $("#disclosure1").hide();
+                $("#disclosure2").show();
+            }else{
+                $("#disclosure1").show();
+            }
             document.getElementById("nextBtn").innerHTML = "Submit";
         } else {
             document.getElementById("nextBtn").innerHTML = "Next";
@@ -376,7 +389,7 @@ $business_officer=get_business_officer($uid);
         var x = document.getElementsByClassName("tab");
         //$("#treasureForm").validate();
         // Exit the function if any field in the current tab is invalid:
-        if (n == 1 && !validateForm()) return false;
+       // if (n == 1 && !validateForm()) return false;
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:

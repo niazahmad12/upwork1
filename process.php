@@ -20,7 +20,7 @@ $create_business_data = [
 
 $business_setup = createBusiness($access_token , $create_business_data);
 $business_id='';
-//var_dump($business_setup);
+//debugVar($business_setup,true);
 if(!empty($business_setup )){
     $business_id=$business_setup['id'];
 }
@@ -170,10 +170,10 @@ $mapping['business_member_onboarding']['email']=$post['email'];
 
 //	OnboardingPoliciesObject
 $mapping['policies']['bank_account_agreement']=false ;//boolean
-$mapping['policies']['investment_management_agreement']=false ;//boolean
-$mapping['policies']['entity_llc_agreement']=false ;//boolean
+$mapping['policies']['investment_management_agreement']=true ;//boolean
+$mapping['policies']['entity_llc_agreement']=true ;//boolean
 $mapping['policies']['entity_corporation_cash_account_agreement']=false ;//boolean
-$mapping['policies']['entity_new_account_ria']=false ;//boolean
+$mapping['policies']['entity_new_account_ria']=true ;//boolean
 //debugVar($mapping);
 //exit;
 
@@ -183,7 +183,7 @@ $jsonEncode = json_encode($mapping,true);
 
 // $business_data_dcode = json_decode($business_data,true);
 // debugVar($business_data_dcode);
-
-$bording = createOnBoarding($access_token, $mapping, $business_id);
+$bid='23e0cec2-f1ee-11ee-aa14-759416b06ab6';
+$bording = createOnBoarding($access_token, $mapping, $bid);
 print_r($bording);
 ?>

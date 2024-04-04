@@ -106,7 +106,7 @@ function createOnBoarding($access_token, $business_data, $business_id) {
             if(!empty($id) && $row["iso3"]==$id){
                 $selected='selected="selected"';
             }
-            $countries .= '<option value="'.$row["iso3"].'" '.$selected.'>'.$row["name"].'</option>';
+            $countries .= '<option value="'.$row["iso3"].'" '.$selected.'>'.strtolower($row["name"]).'</option>';
         }
         return $countries;
     }
