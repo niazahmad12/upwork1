@@ -22,6 +22,10 @@ include_once 'helpers/init.php';
             </div>
           
             <div class="mb-3">
+                <label for="ownershipPercentage" class="form-label">Ownership percentage</label>
+                <input  type="number" name="ownershipPercentage" id="ownershipPercentage"  class="form-control" placeholder="%"  value="0" required maxlength="3" style="width: 80px;">
+            </div>
+            <div class="mb-3">
                 <label for="jobTitle" class="form-label">Title / Role</label>
                 <input  type="text" name="jobTitle" id="jobTitle"  class="form-control" placeholder="Last Name"  required>
             </div>

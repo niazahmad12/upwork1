@@ -1,7 +1,6 @@
 <?php
 include_once 'helpers/init.php';
 //debugVar($_REQUEST);
-
 if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='del'){
     $data=array();
     $response=del_business_officer($_REQUEST['id']);
@@ -11,7 +10,6 @@ if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='del'){
     echo json_encode($data);
     exit;
 }
-
 if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='add'){
     //debugVar($_REQUEST);
     $data=array();
@@ -24,7 +22,7 @@ if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='add'){
     $aReturn['msg']='record added successfully';
     $aReturn['f']='1';
     $aReturn['result']=$response;
-    json_encode($aReturn);
+    //json_encode($aReturn);
     header("location: add_officer_dialog.php?id=".$_REQUEST['uid']."&msg=record added successfully");
     exit;
 }

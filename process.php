@@ -158,7 +158,12 @@ $mapping['business_member_onboarding']['is_authorized_signer']=true; //* boolean
 $mapping['business_member_onboarding']['addresses'][]=array('address1'=>$post['businessRepresentativeAddress1'],'address2'=>$post['businessRepresentativeAddress2'],'city'=>$post['businessRepresentativeCity'],
 'postal_code'=>$post['businessRepresentativeStateZipCode'],'region'=>$businessRepresentativeState,'country'=>$post['citizenshipCountry']);
 
-$mapping['business_member_onboarding']['ownership_percentage']=0;
+$ownershipPercentage=0;
+if(!empty($post['ownershipPercentage'])){
+  $ownershipPercentage = $post['ownershipPercentage'];
+}
+
+$mapping['business_member_onboarding']['ownership_percentage']=$ownershipPercentage;
 
 $mapping['business_member_onboarding']['leader_of_public_company']=isset($post['leaderOfPublicCompany'])?true:false;
 $mapping['business_member_onboarding']['broker_dealer']=isset($post['brokerDealer'])?true:false;

@@ -171,3 +171,15 @@ function bod(id){
         
      });
 }
+function addPercentageSign(){
+    $('#ownershipPercentage').keyup(function(e) {
+        if(e.which != 13) { //13 is enter, you dont want to submit the form on enter
+          var value = $.trim($(this).val());
+          if(value != '') {
+             $(this).val(value +'%');
+          }
+        } else {
+             return false;
+        }
+    });
+}
