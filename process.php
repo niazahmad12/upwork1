@@ -26,7 +26,7 @@ if(!empty($business_setup )){
 }
 
 $post = $_POST;
-//debugVar($post);
+debugVar($post);
 $state='';
 $aDob='';
 $aBO=array();
@@ -174,7 +174,7 @@ $mapping['policies']['investment_management_agreement']=true ;//boolean
 $mapping['policies']['entity_llc_agreement']=true ;//boolean
 $mapping['policies']['entity_corporation_cash_account_agreement']=false ;//boolean
 $mapping['policies']['entity_new_account_ria']=true ;//boolean
-//debugVar($mapping);
+debugVar($mapping);
 //exit;
 
 $jsonEncode = json_encode($mapping,true);
@@ -183,7 +183,13 @@ $jsonEncode = json_encode($mapping,true);
 
 // $business_data_dcode = json_decode($business_data,true);
 // debugVar($business_data_dcode);
-$bid='23e0cec2-f1ee-11ee-aa14-759416b06ab6';
-$bording = createOnBoarding($access_token, $mapping, $bid);
+//$bid='23e0cec2-f1ee-11ee-aa14-759416b06ab6';
+$bording = createOnBoarding($access_token, $mapping,$business_id);
 print_r($bording);
+
+//debugVar($bording['error_message']);
+//debugVar($bording['error_code']);
+if(empty($bording['error_message']))
+  del_user_all_officers($post['uid']);
+
 ?>

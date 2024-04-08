@@ -3,6 +3,7 @@ $(document).ready(function(){
     // $('#nextBtn').on('click', function() {
     //     $("#treasureForm").valid();
     // });
+    $('.datepicker').datepicker();
     $(".exempt").hide();
     $("#foreignFinancialInstitution").change(function(){
        if($('#foreignFinancialInstitution').is(':checked')){
@@ -41,6 +42,9 @@ $(document).ready(function(){
         var url ='add_officer_dialog.php?id='+uid;
        
         if (userOption == 'add_officer'){
+            window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+        }else{
+            url ='edit_bo_dialog.php?id='+userOption;
             window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
         }
     });

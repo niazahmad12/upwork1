@@ -20,8 +20,13 @@ include_once 'helpers/init.php';
  $state2='';
  $zipCode='';
  $id=$_REQUEST['id'];
+ $params = array();
+ $data = array();
  if(!empty($result['business_officer'])){
-    $data = unserialize($result['business_officer']);
+    $params = unserialize($result['business_officer']);
+   // debugVar($params['data']);
+    parse_str($params['data'],$data);
+   // debugVar($data);
     $fname=$data['first_name'];
     $lname=$data['last_name'];
     $jobTitle=$data['jobTitle'];
@@ -76,7 +81,7 @@ include_once 'helpers/init.php';
             </div>
             <div class="mb-3">
                 <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                <input  type="text" name="dateOfBirth" id="dateOfBirth"   value="<?=$dateOfBirth;?>" class="form-control" placeholder="MM/DD/YYYY" required>
+                <input  type="text" name="dateOfBirth" id="dateOfBirth"   value="<?=$dateOfBirth;?>" class="form-control datepicker" placeholder="MM/DD/YYYY" required readonly>
             </div>
             <div class="mb-3">
                 <label for="nationalIdentifier" class="form-label">Social Security Number</label>

@@ -31,7 +31,7 @@ include_once 'helpers/init.php';
             </div>
             <div class="mb-3">
                 <label for="jobTitle" class="form-label">Email</label>
-                <input  type="text" name="email" id="email"  class="form-control" placeholder="Email" value="niazahmad1@hotmail.com"  required>
+                <input  type="text" name="email" id="email"  class="form-control" placeholder="Email" value="abc@gmail.com"  required>
             </div>
             <div class="mb-3">
                 <label for="citizenshipCountry" class="form-label">Country of Citizenship</label>
@@ -41,7 +41,7 @@ include_once 'helpers/init.php';
             </div>
             <div class="mb-3">
                 <label for="jobTitle" class="form-label">Date of Birth</label>
-                <input  type="text" name="dateOfBirth" id="dateOfBirth"  class="form-control" placeholder="MM/DD/YYYY" required>
+                <input  type="text" name="dateOfBirth" id="dateOfBirth"  class="form-control datepicker" placeholder="MM/DD/YYYY" required readonly>
             </div>
             <div class="mb-3">
                 <label for="jobTitle" class="form-label">Social Security Number</label>

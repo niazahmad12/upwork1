@@ -193,7 +193,11 @@ function add_business_officer($post){
     $db = new DBClass();
     global $USERS;
     $data=array();
-    $query = "INSERT INTO business_officer(user_id, name, business_officer) VALUES ('".addslashes($post["user_id"])."', '".addslashes($post["name"])."','".addslashes($post["data"])."')";
+    $is_aof=0;
+    if(isset($post['is_aof'])){
+        $is_aof = $post['is_aof'];
+    }
+    $query = "INSERT INTO business_officer(user_id, name, business_officer,is_aof) VALUES ('".addslashes($post["user_id"])."', '".addslashes($post["name"])."','".addslashes($post["data"])."','$is_aof')";
     $rs=$db->query($query);
     return $rs;
 }
@@ -202,6 +206,7 @@ function edit_business_officer($post){
     $db = new DBClass();
     global $USERS;
     $id = $post['id'];
+    $current_datetime=date("Y-m-d H:i");
     $query = "UPDATE business_officer SET name='".addslashes($post["name"])."', business_officer='".addslashes($post["data"])."' WHERE id= '$id'";
     $rs=$db->query($query);
     return $rs;
@@ -218,7 +223,6 @@ function get_business_officer($id){
         $data[]=$row;
     }
     return $data;
-
 }
 function get_bo_by_id($id){
     include_once('DBClass.php');
@@ -241,5 +245,49 @@ function del_business_officer($id){
         return $rs;
     }
     
+}
+function del_user_all_officers($uid){
+    include_once('DBClass.php');
+    $db = new DBClass();
+    if(!empty($uid)){
+        $query="DELETE FROM business_officer WHERE  user_id ='$uid' ";
+        $rs=$db->query($query);
+        return $rs;
+    }
+    
+}
+
+function get_business_officer_list($uid=0){
+    include_once('DBClass.php');
+    $db = new DBClass();
+
+    $query="SELECT * FROM business_officer WHERE  user_id ='$uid' ";
+    $rs=$db->query($query);
+    $num_rows=$db->numRows($rs);
+    $list='';
+    $selected='';
+    $list = '<option value="nothing" selected="selected"> Select or add new business officier</option>';
+    $list .= '<option value="add_officer"> Add business officier</option>';
+    while($row = $db->fetchAssoc($rs)) {
+        $selected='';
+        if($row["is_aof"]==1){
+            $selected='selected="selected"';
+        }
+        $list .= '<option value="'.$row["id"].'" '.$selected.'>'.$row["name"].'</option>';
+    }
+    return $list;
+
+}
+
+function fetch_bo_aof($uid){
+    include_once('DBClass.php');
+    $db = new DBClass();
+    //global $USERS;
+    $data=array();
+    $query="SELECT * FROM business_officer WHERE  user_id ='$uid' and is_aof=1 LIMIT 1";
+    $rs=$db->query($query);
+    //$num_rows=$db->numRows($rs);
+    $row = $db->fetchAssoc($rs);
+    return $row;
 }
 ?>
