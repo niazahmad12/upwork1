@@ -26,7 +26,7 @@ if(!empty($business_setup )){
 }
 
 $post = $_POST;
-debugVar($post);
+//debugVar($post);
 $state='';
 $aDob='';
 $aBO=array();
@@ -51,36 +51,41 @@ if(!empty($post['dateOfBirth'])){
   $aDob = explode("/",$post['dateOfBirth']);
 }
 
-$aBRep['first_name']=$post['first_name'];
-$aBRep['last_name']=$post['last_name'];
-$aBRep['date_of_birth']=array('month'=>$aDob[0],'day'=>$aDob[1],'year'=>$aDob[2]);
-$aBRep['residency_country']=$post['residencyCountry'];
-$aBRep['citizenship_country']=$post['citizenshipCountry'];
-$aBRep['job_title']=$post['jobTitle'];
-$aBRep['is_entity_officer']=true;
-$aBRep['phone_number']=array('country_code'=>'+1','phone_number'=>preg_replace('/[^0-9]/', '', $post['phoneNumber'])); //string,minLength: 10,maxLength: 10
-$aBRep['is_authorized_signer']=false;
+// $aBRep['first_name']=$post['first_name'];
+// $aBRep['last_name']=$post['last_name'];
+// $aBRep['date_of_birth']=array('month'=>$aDob[0],'day'=>$aDob[1],'year'=>$aDob[2]);
+// $aBRep['residency_country']=$post['residencyCountry'];
+// $aBRep['citizenship_country']=$post['citizenshipCountry'];
+// $aBRep['job_title']=$post['jobTitle'];
+// $aBRep['is_entity_officer']=true;
+// $aBRep['phone_number']=array('country_code'=>'+1','phone_number'=>preg_replace('/[^0-9]/', '', $post['phoneNumber'])); //string,minLength: 10,maxLength: 10
+// $aBRep['is_authorized_signer']=false;
 
-$aBRep['addresses'][]=array('address1'=>$post['address1'],'address2'=>$post['address2'],'city'=>$post['city'],
-'postal_code'=>$post['zipCode'],'region'=> $state,'country'=>$post['citizenshipCountry']);
+// $aBRep['addresses'][]=array('address1'=>$post['address1'],'address2'=>$post['address2'],'city'=>$post['city'],
+// 'postal_code'=>$post['zipCode'],'region'=> $state,'country'=>$post['citizenshipCountry']);
 
 
-$aBRep['ownership_percentage']=0;
-$aBRep['national_identifier']=$post['nationalIdentifier'];
-$aBRep['email']=$post['email'];
+// $aBRep['ownership_percentage']=0;
+// $aBRep['national_identifier']=$post['nationalIdentifier'];
+// $aBRep['email']=$post['email'];
 
-$aBusinessMembers[]=$aBRep;
+// $aBusinessMembers[]=$aBRep;
 
 if(!empty($post['uid'])){
   $aRecordOfficer =get_business_officer($post['uid']);
 
   if(!empty($aRecordOfficer)){
     foreach($aRecordOfficer as $key => $val){
+      $business_officer=array();
 
-      $business_officer= unserialize($val['business_officer']);
+      $business_officer2= unserialize($val['business_officer']);
+      //debugVar($business_officer2);
+
+      parse_str($business_officer2['data'],$business_officer);
+
       //debugVar($business_officer);
-      $aBO['first_name']=$business_officer['first_name'];
-      $aBO['last_name']=$business_officer['last_name'];
+      $aBO['first_name']=$business_officer2['first_name'];
+      $aBO['last_name']=$business_officer2['last_name'];
       if(!empty($business_officer['dateOfBirth'])){
         $boDob = explode("/",$business_officer['dateOfBirth']);
         $aBO['date_of_birth']=array('month'=>$boDob[0],'day'=>$boDob[1],'year'=>$boDob[2]);
@@ -89,20 +94,20 @@ if(!empty($post['uid'])){
       $aBO['citizenship_country']=$business_officer['citizenshipCountry'];
       $aBO['job_title']=$business_officer['jobTitle'];
       $aBO['is_entity_officer']=true;
-      $aBO['phone_number']=array('country_code'=>'+1','phone_number'=>preg_replace('/[^0-9]/', '', $business_officer['phoneNumber'])); //string,minLength: 10,maxLength: 10
+      $aBO['phone_number']=array('country_code'=>'+1','phone_number'=>preg_replace('/[^0-9]/', '', $business_officer['businessPhoneNumber'])); //string,minLength: 10,maxLength: 10
       $aBO['is_authorized_signer']=false;
-      if(isset($business_officer['state']) && $business_officer['state']!=''){
-        $businessMembersState=$business_officer['state'];
-      }elseif(isset($business_officer['state2']) && $business_officer['state2']!=''){
-        $businessMembersState=$business_officer['state2'];
+      if(isset($business_officer['businessRepresentativeState']) && $business_officer['businessRepresentativeState']!=''){
+        $businessMembersState=$business_officer['businessRepresentativeState'];
+      }elseif(isset($business_officer['businessRepresentativeState2']) && $business_officer['businessRepresentativeState2']!=''){
+        $businessMembersState=$business_officer['businessRepresentativeState2'];
       }
 
       
-      $aBO['addresses'][]=array('address1'=>$business_officer['address1'],'address2'=>$business_officer['address2'],'city'=>$business_officer['city'],
-      'postal_code'=>$business_officer['zipCode'],'region'=> $businessMembersState,'country'=>$business_officer['citizenshipCountry']);
+      $aBO['addresses'][]=array('address1'=>$business_officer['businessRepresentativeAddress1'],'address2'=>$business_officer['businessRepresentativeAddress2'],'city'=>$business_officer['businessRepresentativeCity'],
+      'postal_code'=>$business_officer['businessRepresentativeStateZipCode'],'region'=> $businessMembersState,'country'=>$business_officer['citizenshipCountry']);
       $aBO['ownership_percentage']=0;
-      $aBO['national_identifier']=$post['nationalIdentifier'];
-      $aBO['email']=$post['email'];
+      $aBO['national_identifier']=$business_officer['nationalIdentifier'];
+      $aBO['email']=$business_officer['email'];
 
       $aBusinessMembers[]=$aBO;
       //debugVar($aBO);
@@ -179,7 +184,7 @@ $mapping['policies']['investment_management_agreement']=true ;//boolean
 $mapping['policies']['entity_llc_agreement']=true ;//boolean
 $mapping['policies']['entity_corporation_cash_account_agreement']=false ;//boolean
 $mapping['policies']['entity_new_account_ria']=true ;//boolean
-debugVar($mapping);
+//debugVar($mapping);
 //exit;
 
 $jsonEncode = json_encode($mapping,true);

@@ -82,7 +82,6 @@ $(document).ready(function(){
             $(".exempt_add").show();
         }
     });
-    
 });
 function phone_number_mask(id){
 document.getElementById(id).addEventListener('input', function (e) {
@@ -97,7 +96,11 @@ function boe(id){
     
     var url ='edit_officer_dialog.php?id='+id;
     
-    window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+ //   window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+ $( "#dialog-1" ).dialog({
+    autoOpen: false,  
+ });
+ $( "#dialog-1" ).dialog( "open" );
     // var url = 'process.ajax.php';
     // $.ajax({
     //     url: url,

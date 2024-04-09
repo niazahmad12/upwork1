@@ -11,9 +11,8 @@ $business_officer=get_business_officer($uid);
 
 //debugVar($uid);
 ?>
-<div class="container section mt-5">
   <!-- Circles which indicates the steps of the form: -->
-        <div style="text-align:center;margin-top:40px;">
+  <div style="text-align:center;margin-top:10px;">
             <span class="step"></span>
             <span class="step"></span>
             <span class="step"></span>
@@ -21,12 +20,14 @@ $business_officer=get_business_officer($uid);
             <span class="step"></span>
             <span class="step"></span>
         </div>
+<div class="container section mt-2">
+
 
         <form name="treasureForm" id="treasureForm" method="post" action="process.php">
             <input type="hidden" name="uid" id="uid" value="<?=$uid?>">
                 <!-- Start Step-1 Business Structure -->
                 <div class="tab">
-                    <h3>Business Structure</h3>
+                    <h3 class="p-2">Business Structure</h3>
                     <span>
                     This information about your business helps Treasure meet requirements from regulators and financial partners. 
                     By continuing you agree to our 
@@ -57,9 +58,8 @@ $business_officer=get_business_officer($uid);
                         <input type="text" name="city" id="city" class="form-control"  placeholder="City" required>
                     </div>
                     <div class="mb-3">
-                        <label for="states" class="form-label">State</label>
+                        <!-- <label for="states" class="form-label">State</label> -->
                         <select class="form-select" name="state" id="state" required>
-                        <option value="">Please state</option>
                             <?=states_list()?>
                         </select> 
                         <input type="text" name="state2" id="state2" class="form-control" placeholder="state" style="display: none;"> 
@@ -87,7 +87,7 @@ $business_officer=get_business_officer($uid);
             <!-- Start Step-2 Business Details -->       
             <div class="tab">
                 <h3>Business Details</h3>
-                <div class="mb-3 mt-5">
+                <div class="mb-2 mt-2">
                     <label for="legalName" class="form-label">Legal business name</label>
                     <input  type="text" name="legalName" id="legalName"  class="form-control" placeholder="Company" required>
                     <span class="mb-5">The combination of your name and Employer Identification Number 
@@ -327,16 +327,16 @@ $business_officer=get_business_officer($uid);
             <div class="tab">
                 <h3>Legal Disclosures</h3>
                 <p>Please review all of the terms & conditions.</p>
-                <div style="border: 1px solid;" id="disclosure1">
+                <div style="border: 1px solid; height: 500px;  overflow: hidden; overflow-y: scroll;" id="disclosure1" >
                     <?php include_once('legal_disclosure1.php') ?>
                 </div>
-                <div style="border: 1px solid; display:none;" id="disclosure2">
+                <div style="border: 1px solid; height: 500px;  overflow: hidden; display:none; overflow-y: scroll;" id="disclosure2">
                     <?php include_once('legal_disclosure2.php') ?>
                 </div>
             </div>   
             <!-- End Step-6 Legal Disclosures -->       
 
-            <div class="mb-3" style="overflow:auto;">
+            <div class="mb-3 p-3 npb" style="overflow:auto; ">
                 <div style="float:right;">
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)"  class="btn btn-primary">Previous</button>
                 <button type="button" id="nextBtn" onclick="nextPrev(1)" class="btn btn-primary">Next</button>
@@ -345,6 +345,7 @@ $business_officer=get_business_officer($uid);
             </div>
 
                 <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+            <div id="loading" style="display:none;text-align:center; background-color:#fff;"><img src="assets/img/loading.gif"></div>
         </form>
     </div>
     <script>
@@ -398,8 +399,17 @@ $(document).ready(function(){
         currentTab = currentTab + n;
         // if you have reached the end of the form...
         if (currentTab >= x.length) {
+           
             // ... the form gets submitted:
             document.getElementById("treasureForm").submit();
+            $(".npb").hide();
+            var loading = $("#loading");
+
+           // $(document).ajaxStart(function () {
+            loading.show();
+            //});
+  
+
             return false;
         }
           // add/update business representative

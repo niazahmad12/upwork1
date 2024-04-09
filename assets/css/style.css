@@ -1,7 +1,9 @@
 
 .section{
     border: 1px solid black;
-    width: 40%;
+    width: 50%;
+    background-color:#F8F9F9
+    
 
 }
 .center-screen {
@@ -20,6 +22,8 @@
     /* background-color: #f1f1f1; */
     background-color: #ffffff;
     font-family:Arial, Helvetica, sans-serif;
+    line-height:1.5em;
+    letter-spacing:0.00938em;
   }
   
   /* #regForm {
@@ -71,7 +75,7 @@
   }
   
   #prevBtn {
-    background-color: #bbbbbb;
+    background-color: #0d6efd;
   }
   
   /* Make circles that indicate the steps of the form: */
@@ -94,3 +98,10 @@
   .step.finish {
     background-color: #04AA6D;
   }
+  h3{
+    line-height:1.5em;
+    letter-spacing:0.00938em;
+    padding:3px;
+    text-transform:capitalize;
+  }
+

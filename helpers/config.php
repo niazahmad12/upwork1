@@ -2,6 +2,9 @@
 $CLIENT_ID='OdU6vzlFVpDcA5Y8gixhkJheU6JdIvMG';
 $CLIENT_SECRET='aufdRig2xMxFNpeq9OGZOdrcbM2PxdcVrebMw62O4ewZYU5H9ybBuP9q0yDawBM';
 define("DEBUG_ON",true);
+ ini_set('display_errors', 0);
+ ini_set('display_startup_errors', 0);
+ error_reporting(0);
 
 $USERS=array('test1'=>1,'test2'=>2);
 
