@@ -10,6 +10,7 @@ $business_officer=get_business_officer($uid);
 //debugVar($business_officer);
 
 //debugVar($uid);
+//debugVar($_REQUEST['id']);
 ?>
   <!-- Circles which indicates the steps of the form: -->
   <div style="text-align:center;margin-top:10px;">
@@ -20,9 +21,11 @@ $business_officer=get_business_officer($uid);
             <span class="step"></span>
             <span class="step"></span>
         </div>
+        <div id="add_bussiness_officer"></div>
+        <div id="update_bussiness_officer"></div>
+        <div id="add_bussiness_owner"></div>
+        <div id="update_bussiness_owner"></div>
 <div class="container section mt-2">
-
-
         <form name="treasureForm" id="treasureForm" method="post" action="process.php">
             <input type="hidden" name="uid" id="uid" value="<?=$uid?>">
                 <!-- Start Step-1 Business Structure -->
@@ -296,17 +299,16 @@ $business_officer=get_business_officer($uid);
                 </div>
                 <div class="row mb-3">
                 <table class="table table-hover table-striped table-responsive">
-                        <tbody>
+                   <tbody id="dTable">
                 <?php 
                 if(!empty($business_officer)){
                     foreach($business_officer as $key => $val){
                 ?>
                     
                             <tr>
-                                <td width="70%"><?=$val['name'];?></td>
-                                <td width="30%">
-                                    <button type="button" class="btn btn-primary" id="btnEdit-<?=$val['id']?>" data-id="<?=$val['id']?>" onclick="boe(<?=$val['id']?>)">Edit</button>
-                                    <!-- <a href="process_add_officer.php/id".<?=$val['id']?>>Edit</a> -->
+                                <td style="width:80%;"><?=$val['name'];?></td>
+                                <td style="width:20%;">
+                                    <button type="button" class="btn btn-primary edit_business_officer" id="btnEdit-<?=$val['id']?>" data-id="<?=$val['id']?>" onclick="boe(<?=$val['id']?>)">Edit</button>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <button type="button" class="btn btn-danger" id="btnCancel-<?=$val['id']?>" data-id="<?=$val['id']?>" onclick="bod(<?=$val['id']?>)">X</button>
                                 </td>
@@ -348,11 +350,93 @@ $business_officer=get_business_officer($uid);
             <div id="loading" style="display:none;text-align:center; background-color:#fff;"><img src="assets/img/loading.gif"></div>
         </form>
     </div>
-    <script>
-      
-$(document).ready(function(){
-    //$("#treasureForm").validate();
-});
+    <!-- Modal Add Officer-->
+
+        <div class="modal" id="myModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title modal-title-officer">Business Officers</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-add">
+                    <?php //include_once('add_officer.php') ?>
+                    <div id="divAODialog">
+                    <input type="hidden" name="eid" id="eid" value="">
+                        <div class="mb-3">
+                                <label for="firstName" class="form-label">Legal Name</label>
+                                <input  type="text" name="first_name" id="first_name" value="" class="form-control aos" placeholder="First Name"  required><br>
+                                <input  type="text" name="last_name" id="last_name" value="" class="form-control aos" placeholder="Last Name"  required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jobTitle" class="form-label">Title / Role</label>
+                                <input  type="text" name="jobTitle" id="jobTitle"  class="form-control aos" placeholder="Last Name"  required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="businessPhoneNumber" class="form-label">Business Phone Number</label>
+                                <!-- onkeypress="phone_number_mask(this.id);" -->
+                                <input  type="text" name="businessPhoneNumber" id="businessPhoneNumber"  class="form-control aos" placeholder="########## "   required maxlength="10">
+                            </div>
+                            <div class="mb-3">
+                                <label for="jobTitle" class="form-label">Email</label>
+                                <input  type="text" name="email" id="email"  class="form-control aos" placeholder="Email" value="abc@gmail.com"  required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="citizenshipCountry" class="form-label">Country of Citizenship</label>
+                                <select class="form-select aos" name="citizenshipCountry" id="citizenshipCountry">
+                                    <?=country_list('USA')?>
+                                </select>  
+                            </div>
+                            <div class="mb-3">
+                                <label for="jobTitle" class="form-label">Date of Birth</label>
+                                <input  type="text" name="dateOfBirth" id="dateOfBirth"  class="form-control datepicker aos" placeholder="MM/DD/YYYY" required readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jobTitle" class="form-label">Social Security Number</label>
+                                <input  type="text" name="nationalIdentifier" id="nationalIdentifier"  class="form-control aos" placeholder="#########" required maxlength="9">
+                            </div>
+                            <div class="mb-3">
+                                <label for="residencyCountry" class="form-label">Country of Residency</label>
+                                <select class="form-select aos" name="residencyCountry" id="residencyCountry">
+                                    <?=country_list('USA')?>
+                                </select>  
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" name="businessRepresentativeAddress1" id="businessRepresentativeAddress1" class="form-control aos"   placeholder="Address line 1" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" name="businessRepresentativeAddress2" id="businessRepresentativeAddress2" class="form-control aos"  placeholder="Address line 2">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" name="businessRepresentativeCity" id="businessRepresentativeCity" class="form-control aos"  placeholder="City" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="states" class="form-label">State</label>
+                                <select class="form-select aos" name="businessRepresentativeState" id="businessRepresentativeState">
+                                    <?=states_list()?>
+                                </select> 
+                                <input type="text" name="businessRepresentativeState2" id="businessRepresentativeState2" class="form-control aos" placeholder="state" style="display: none;"> 
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" name="businessRepresentativeStateZipCode" id="businessRepresentativeZipCode" class="form-control aos"  placeholder="Zip"  style="width: 300px !important;">
+                            </div>
+                     </div>
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btnAddOfficer">Submit</button>
+                    </div>
+                </div>
+            </div>
+       </div>
+       <!-- Modal Add Officer End-->
+
+<script>
+
+// $(document).ready(function(){
+
+   
+// });
 
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
@@ -392,7 +476,7 @@ $(document).ready(function(){
         var x = document.getElementsByClassName("tab");
         //$("#treasureForm").validate();
         // Exit the function if any field in the current tab is invalid:
-        if (n == 1 && !validateForm()) return false;
+       // if (n == 1 && !validateForm()) return false;
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:
@@ -480,9 +564,9 @@ $(document).ready(function(){
         function addOfficer(){
 
             var uid = $("#uid").val();
-            var first_name= $("#first_name").val();
-            var last_name= $("#last_name").val();
-            var data = $('#aoForm :input').serialize();
+            var first_name= $("#fn").val();
+            var last_name= $("#ln").val();
+            var data = $('#divAO :input').serialize();
             var url = 'process.ajax.php';
 
             $.ajax({

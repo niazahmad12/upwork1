@@ -1,8 +1,6 @@
 
 $(document).ready(function(){
-    // $('#nextBtn').on('click', function() {
-    //     $("#treasureForm").valid();
-    // });
+
     $('.datepicker').datepicker();
     $(".exempt").hide();
     $("#foreignFinancialInstitution").change(function(){
@@ -36,16 +34,21 @@ $(document).ready(function(){
     $("#add_bo").change(function(){
         var userOption = $("#add_bo").val();
         var uid = $("#uid").val();
-        var left  = ($(window).width()/2)-(900/2);
-        var top   = ($(window).height()/2)-(600/2);
-     
-        var url ='add_officer_dialog.php?id='+uid;
-       
-        if (userOption == 'add_officer'){
-            window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+        var url ='add_officer2.php';
+
+        if(userOption == 'nothing'){
+            console.log(userOption);
+        }else if(userOption == 'add_officer'){
+            console.log(userOption);
+                $('#myModal').modal("show");
         }else{
-            url ='edit_bo_dialog.php?id='+userOption;
-            window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+             url ='edit_officer_dialog.php?id='+userOption;
+            //url ='edit_bo_dialog.php?id='+userOption;
+              //$('.modal-body-edit').load(url,function(){
+                console.log(userOption);
+                $('#myModal').modal("show");
+           // });
+           // window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
         }
     });
     $("#add_bn").change(function(){
@@ -82,6 +85,92 @@ $(document).ready(function(){
             $(".exempt_add").show();
         }
     });
+    $("#btnAddOfficer").click(function(e){
+        e.preventDefault();
+       
+        var uid = $("#uid").val();
+        var eid = $("#eid").val();
+        var first_name= $("#first_name").val();
+        var last_name= $("#last_name").val();
+        var data = $('#divAODialog :input').serialize();
+        var url = 'process.ajax.php';
+        var ac="add";
+        if(eid != ''){
+            var ac="edit";
+        }
+
+        $.ajax({
+            url: url,
+            dataType: "json",
+            type: "POST",
+            async: false,
+            cache: false,
+            data: {
+            "ac":ac,
+            "uid":uid,
+            "id":eid,
+            "first_name":first_name,
+            "last_name":last_name,
+            "data":data
+            },
+            success: function(response)
+            {
+                console.log(response);
+                //console.log(typeof(response.result));
+                if(response.result==true){
+                    $.ajax({
+                        url: url,
+                        dataType: "json",
+                        type: "POST",
+                        async: false,
+                        data: {
+                        "ac":'get_off',
+                        "uid":uid
+                        },
+                        success: function(response)
+                        {
+                        //console.log(response);
+                        $("#add_bo").html(response.result);
+                        }
+                    });
+                    $.ajax({
+                        url: url,
+                        dataType: "json",
+                        type: "POST",
+                        async: false,
+                        data: {
+                        "ac":'get_off_table',
+                        "uid":uid
+                        },
+                        success: function(response)
+                        {
+                        //console.log(response);
+                        $("#dTable").html(response.result);
+                        }
+                    });
+                    $("#first_name").val('');
+                    $("#eid").val('');
+                    $("#last_name").val('');
+                    $("#jobTitle").val('');
+                    $("#businessPhoneNumber").val('');
+                    $("#email").val('');
+                    $("#citizenshipCountry").val('');
+                    $("#dateOfBirth").val('');
+                    $("#nationalIdentifier").val('');
+                    $("#residencyCountry").val('');
+                    $("#businessRepresentativeAddress1").val('');
+                    $("#businessRepresentativeAddress2").val('');
+                    $("#businessRepresentativeCity").val('');
+                    $("#businessRepresentativeState").val('');
+                    $("#businessRepresentativeState2").val('');
+                    $("#businessRepresentativeStateZipCode").val('');
+                    $('.modal-header .btn-close').click();
+
+                }
+                return false;
+            }
+        });
+    });
 });
 function phone_number_mask(id){
 document.getElementById(id).addEventListener('input', function (e) {
@@ -91,38 +180,61 @@ document.getElementById(id).addEventListener('input', function (e) {
 }
 function boe(id){
     var uid = $("#uid").val();
-    var left  = ($(window).width()/2)-(900/2);
-    var top   = ($(window).height()/2)-(600/2);
+   // var left  = ($(window).width()/2)-(900/2);
+    //var top   = ($(window).height()/2)-(600/2);
     
-    var url ='edit_officer_dialog.php?id='+id;
-    
- //   window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
- $( "#dialog-1" ).dialog({
-    autoOpen: false,  
- });
- $( "#dialog-1" ).dialog( "open" );
-    // var url = 'process.ajax.php';
-    // $.ajax({
-    //     url: url,
-    //     dataType: "json",
-    //     method: "GET",
-    //     async: false,
-    //     data: {
-    //         "id": id,
-    //         "ac":'edit'
-    //     },
-    //     success: function(response)
-    //     {
-    //         alert(response.success);
-    //         location.reload();
+   // var url ='edit_bo_dialog.php?id='+id;
 
-    //     }
-        
-    //  });
+   // var url ='edit_officer_dialog.php?id='+id;
+   var url = 'process.ajax.php';
+   $(".modal-title-officer").val("Update Business Officers");
+   $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        async: false,
+        data: {
+        "ac":'get_bo_by_id',
+        "id":id
+        },
+        success: function(response)
+        {
+        console.log(response.data);
+        //alert(response.data)
+        //$("#dTable").html(response.result);
+        //console.log(response.data.first_name);
+        $("#first_name").val(response.data.first_name);
+        $("#eid").val(id);
+        $("#last_name").val(response.data.last_name);
+        $("#jobTitle").val(response.data.jobTitle);
+        $("#businessPhoneNumber").val(response.data.businessPhoneNumber);
+        $("#email").val(response.data.email);
+        $("#citizenshipCountry").val(response.data.citizenshipCountry);
+        $("#dateOfBirth").val(response.data.dateOfBirth);
+        $("#nationalIdentifier").val(response.data.nationalIdentifier);
+        $("#residencyCountry").val(response.data.residencyCountry);
+        $("#businessRepresentativeAddress1").val(response.data.businessRepresentativeAddress1);
+        $("#businessRepresentativeAddress2").val(response.data.businessRepresentativeAddress2);
+        $("#businessRepresentativeCity").val(response.data.businessRepresentativeCity);
+        $("#businessRepresentativeState").val(response.data.businessRepresentativeState);
+        $("#businessRepresentativeState2").val(response.data.businessRepresentativeState2);
+        $("#businessRepresentativeStateZipCode").val(response.data.businessRepresentativeStateZipCode);
+        }
+    });
+
+
+     //  $('.modal-body-edit').load(url,function(){
+        $('#myModal').modal("show");
+      // });
+    
+   //window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+
+
 }
 
 function bod(id){
     //let id = e.attr('data-id');
+    var uid = $("#uid").val();
      var url = 'process.ajax.php';
      $.ajax({
          url: url,
@@ -135,11 +247,22 @@ function bod(id){
          },
          success: function(response)
          {
-             alert(response.msg);
-             if(response.f =='1'){
-                location.reload();
-             }
-            
+           //  alert(response.msg);
+             $.ajax({
+                url: url,
+                dataType: "json",
+                type: "POST",
+                async: false,
+                data: {
+                "ac":'get_off_table',
+                "uid":uid
+                },
+                success: function(response)
+                {
+                //console.log(response);
+                $("#dTable").html(response.result);
+                }
+            });
  
          }
          
@@ -166,10 +289,25 @@ function bod(id){
         success: function(response)
         {
             alert(response.msg);
-            window.close();
+           // window.close();
             //location.reload();
-            window.location.reload();
-
+            //window.location.reload();
+            $.ajax({
+                url: url,
+                dataType: "json",
+                type: "POST",
+                async: false,
+                data: {
+                "ac":'get_off_table',
+                "uid":uid
+                },
+                success: function(response)
+                {
+                //console.log(response);
+                $("#dTable").html(response.result);
+                }
+            });
+            $('.modal-header .btn-close').click();
         }
         
      });

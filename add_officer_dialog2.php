@@ -1,20 +1,4 @@
-<?php
-include_once 'views/headers_popup.php';
-include_once 'helpers/init.php';
-?>
-
-
-<form name="frmAddOfficer" id="frmAddOfficer" method="post" action="process.ajax.php">
-    <input type="hidden" name="ac" value="add">
-   
-    <input type="hidden" name="uid" value="<?=$_REQUEST['id']?>">
-        <div class="mt-2 mr-5 p-3">
-        <!-- <h3 class="mb-3 mt-3">Add Business Owners</h3> -->
-        <?php
-            if(isset($_REQUEST['msg'])){
-                echo '<div class="alert alert-success">'.$_REQUEST['msg'].'</div>';
-            }
-            ?>
+        <div id="aoForm">
             <div class="mb-3">
                 <label for="firstName" class="form-label">Legal Name</label>
                 <input  type="text" name="first_name" id="first_name" value="" class="form-control" placeholder="First Name"  required><br>
@@ -30,7 +14,7 @@ include_once 'helpers/init.php';
                 <input  type="text" name="jobTitle" id="jobTitle"  class="form-control" placeholder="Last Name"  required>
             </div>
             <div class="mb-3">
-                <label for="phoneNumber" class="form-label">Business Phone Number</label>
+                <label for="phoneNumber" class="form-label">Phone Number</label>
                 <input  type="text" name="phoneNumber" id="phoneNumber"  class="form-control" placeholder="########## "  required maxlength="10">
             </div>
             <div class="mb-3">
@@ -76,9 +60,5 @@ include_once 'helpers/init.php';
             <div class="mb-3">
                 <input type="text" name="zipCode" id="zipCode" class="form-control"  placeholder="Zip"  style="width: 300px !important;">
             </div>
-            <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="button" class="btn btn-primary" onclick="self.close();">Cancel</button>
-            </div>
-        </div>        
-</form>       
+        </div>
+         

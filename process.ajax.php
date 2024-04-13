@@ -22,8 +22,8 @@ if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='add'){
     $aReturn['msg']='record added successfully';
     $aReturn['f']='1';
     $aReturn['result']=$response;
-    //json_encode($aReturn);
-    header("location: add_officer_dialog.php?id=".$_REQUEST['uid']."&msg=record added successfully");
+    echo json_encode($aReturn);
+    //header("location: add_officer_dialog.php?id=".$_REQUEST['uid']."&msg=record added successfully");
     exit;
 }
 if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='edit'){
@@ -32,13 +32,13 @@ if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='edit'){
     $post=array();
     //debugVar($_REQUEST);
     parse_str($_REQUEST['data'],$post);
-    //debugVar($_REQUEST['id']);
+   // debugVar($_REQUEST['id']);
    // debugVar($post);
     if(!empty($post['first_name']) && !empty($post['last_name']) && !empty($_REQUEST['id'])){
         $data['name'] =  trim($post['first_name'])." ".trim($post['last_name']);
         $data['id'] =  $_REQUEST['id'];
         $data['data'] =  serialize($post);
-
+ // debugVar($post);
         $response=edit_business_officer($data);
         //debugVar($response);
     
@@ -68,13 +68,15 @@ if(!empty($_REQUEST['first_name']) && !empty($_REQUEST['last_name'])){
     }else{
         $response=add_business_officer($data);
     }
-}
-    
     $aReturn['msg']='record added successfully';
     $aReturn['f']='1';
     $aReturn['result']=$response;
-    json_encode($aReturn);
+      //debugVar($aReturn["id"]);
+    echo json_encode($aReturn);
     exit;
+}
+    
+    
 }
 
 if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='get_off'){
@@ -89,4 +91,35 @@ if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='get_off'){
     exit;
 }
 
+if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='get_off_table'){
+    //debugVar($_REQUEST);
+    $data=array();
+    $aReturn=array();
+    $response=get_business_officer_table($_REQUEST['uid']);
+
+    $aReturn['result']=$response;
+    echo json_encode($aReturn);
+    //echo $response;
+    exit;
+}
+
+if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='get_bo_by_id'){
+    //debugVar($_REQUEST);
+    $data=array();
+    $aReturn=array();
+    $params='';
+    if(!empty($_REQUEST['id'])){
+        $response=get_bo_by_id($_REQUEST['id']);
+       //  debugVar($response);
+        $params = unserialize($response['business_officer']);
+        //debugVar($params);
+        // parse_str($params['data'],$data);
+        //debugVar($data);
+        $aReturn['data']=$params;
+        echo json_encode($aReturn);
+    }
+  
+    //echo $response;
+    exit;
+}
 ?>

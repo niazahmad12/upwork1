@@ -270,9 +270,9 @@ function get_business_officer_list($uid=0){
     $list .= '<option value="add_officer"> Add business officier</option>';
     while($row = $db->fetchAssoc($rs)) {
         $selected='';
-        if($row["is_aof"]==1){
-            $selected='selected="selected"';
-        }
+        // if($row["is_aof"]==1){
+        //     $selected='selected="selected"';
+        // }
         $list .= '<option value="'.$row["id"].'" '.$selected.'>'.$row["name"].'</option>';
     }
     return $list;
@@ -289,5 +289,27 @@ function fetch_bo_aof($uid){
     //$num_rows=$db->numRows($rs);
     $row = $db->fetchAssoc($rs);
     return $row;
+}
+
+function get_business_officer_table($id){
+    include_once('DBClass.php');
+    $db = new DBClass();
+    //global $USERS;
+    $data=array();
+    $query="SELECT * FROM business_officer WHERE  user_id ='$id' ";
+    $rs=$db->query($query);
+    $num_rows=$db->numRows($rs);
+    $html='';
+    while($row = $db->fetchAssoc($rs)) {
+        //$data[]=$row;
+        $html.='<tr>';
+        $html.='<td style="width:80%;">'.$row["name"].'</td>';
+        $html.='<td style="width:20%;">';
+        $html.='<button type="button" class="btn btn-success edit_business_officer" id="btnEdit-'.$row["id"].'" data-id="'.$row["id"].'" onclick="boe('.$row['id'].')">Edit</button>&nbsp;&nbsp;&nbsp;&nbsp;';
+        $html.='<button type="button" class="btn btn-danger" id="btnCancel-'.$row["id"].'" data-id="'.$row["id"].'" onclick="bod('.$row['id'].')">X</button>';
+        $html.='</td>';
+        $html.='</tr>';
+    }
+    return $html;
 }
 ?>

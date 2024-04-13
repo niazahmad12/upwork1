@@ -3,7 +3,7 @@ include_once 'views/headers_popup.php';
 include_once 'helpers/init.php';
  //debugVar($_REQUEST);
  $result=get_bo_by_id($_REQUEST['id']);
- // debugVar($result);
+  //debugVar($result);
  $fname='';
  $lname='';
  $jobTitle='';
@@ -24,29 +24,28 @@ include_once 'helpers/init.php';
  $data = array();
  if(!empty($result['business_officer'])){
     $params = unserialize($result['business_officer']);
-   // debugVar($params['data']);
+   // debugVar($params);
     parse_str($params['data'],$data);
-   // debugVar($data);
+  //   debugVar($data);
     $fname=$data['first_name'];
     $lname=$data['last_name'];
     $jobTitle=$data['jobTitle'];
-    $phoneNumber=$data['phoneNumber'];
+    $phoneNumber=$data['businessPhoneNumber'];
     $email=$data['email'];
     $citizenshipCountry=$data['citizenshipCountry'];
     $dateOfBirth=$data['dateOfBirth'];
     $nationalIdentifier=$data['nationalIdentifier'];
     $residencyCountry=$data['residencyCountry'];
-    $address1=$data['address1'];
-    $address2=$data['address2'];
-    $city=$data['city'];
+    $address1=$data['businessRepresentativeAddress1'];
+    $address2=$data['businessRepresentativeAddress2'];
+    $city=$data['businessRepresentativeCity'];
   
-    $state2=$data['state2'];
-    $zipCode=$data['zipCode'];
-    if(isset($data['states'])){
-        $states=$data['states'];
+    $zipCode=$data['businessRepresentativeStateZipCode'];
+    if(isset($data['businessRepresentativeState'])){
+        $states=$data['businessRepresentativeState'];
     }
-    if(isset($data['state2'])){
-        $state2=$data['state2'];
+    if(isset($data['businessRepresentativeState2'])){
+        $state2=$data['businessRepresentativeState2'];
     }
  }
  //debugVar($data);
@@ -55,7 +54,7 @@ include_once 'helpers/init.php';
     <input type="hidden" name="ac" value="edit">
     <input type="hidden" name="id" value="<?=$id?>">
         <div class="mt-2 mr-5 p-3">
-        <h3 class="mb-3 mt-3">Update Business Owners</h3>
+        <!-- <h3 class="mb-3 mt-3">Update Business Owners</h3> -->
             <div class="mb-3">
                 <label for="firstName" class="form-label">Legal Name</label>
                 <input  type="text" name="first_name" id="first_name" value="<?=$fname;?>" class="form-control" placeholder="First Name"  required> <br>
@@ -112,9 +111,12 @@ include_once 'helpers/init.php';
             <div class="mb-3">
                 <input type="text" name="zipCode" id="zipCode" class="form-control"   value="<?=$zipCode;?>" placeholder="Zip"  style="width: 300px !important;">
             </div>
-            <div class="mb-3">
-            <button type="button" class="btn btn-primary" onclick="editOfficer('<?=$id?>')">Update</button>
-            <button type="button" class="btn btn-primary" onclick="self.close();">Cancel</button>
+            <hr>
+            <div class="mb-3" style="float:right;">  
+              
+            <button type="button" class="btn btn-success" onclick="editOfficer('<?=$id?>')">Update</button>
+            <!-- <button type="button" class="btn btn-primary" onclick="self.close();">Cancel</button> -->
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>       
 </form>    
