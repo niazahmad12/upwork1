@@ -10,6 +10,34 @@ if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='del'){
     echo json_encode($data);
     exit;
 }
+if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='addowner'){
+    //debugVar($_REQUEST['data']);
+    $data=array();
+    $aReturn=array();
+    $post=array();
+    $flag=true;
+    parse_str($_REQUEST['data'],$post);
+    //debugVar($post);
+    // $data['user_id'] =  $_REQUEST['uid'];
+    $data['name'] =  $post['first_name']." ".$post['last_name'];
+    $data['name'] = trim($data['name'] );
+    $data['user_id'] =  $_REQUEST['uid'];
+    $data['type'] = 'bn';
+    $data['data'] =  serialize($_REQUEST);
+    
+    $checkDuplicate=get_bo_by_name_type($data);
+    //debugVar($checkDuplicate);
+    if(empty($checkDuplicate)){
+        $response=add_business_officer($data);
+        $aReturn['msg']='record added successfully';
+        $aReturn['f']='1';
+        $aReturn['result']=$response;
+        echo json_encode($aReturn);
+    }
+   
+    //header("location: add_officer_dialog.php?id=".$_REQUEST['uid']."&msg=record added successfully");
+    exit;
+}
 if(isset($_REQUEST['ac']) && $_REQUEST['ac']=='add'){
     //debugVar($_REQUEST);
     $data=array();

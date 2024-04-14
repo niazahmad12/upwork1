@@ -4,11 +4,13 @@ include_once 'helpers/init.php';
 ?>
 
 
-<form name="frmAddOfficer" id="frmAddOfficer" method="post" action="process.ajax.php">
+<!-- <form name="frmAddOfficer" id="frmAddOfficer" method="post" action="process.ajax.php"> -->
+    <div id="divAddOfficer">
     <input type="hidden" name="ac" value="add">
+    <input type="hidden" name="type" value="owner">
    
     <input type="hidden" name="uid" value="<?=$_REQUEST['id']?>">
-        <div class="mt-2 mr-5 p-3">
+        <!-- <div class="mt-2 mr-5 p-3"> -->
         <!-- <h3 class="mb-3 mt-3">Add Business Owners</h3> -->
         <?php
             if(isset($_REQUEST['msg'])){
@@ -76,9 +78,10 @@ include_once 'helpers/init.php';
             <div class="mb-3">
                 <input type="text" name="zipCode" id="zipCode" class="form-control"  placeholder="Zip"  style="width: 300px !important;">
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="button" class="btn btn-primary" onclick="self.close();">Cancel</button>
-            </div>
-        </div>        
-</form>       
+            </div> -->
+        <!-- </div>      -->
+    </div>   
+<!-- </form>        -->

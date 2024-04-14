@@ -194,10 +194,14 @@ function add_business_officer($post){
     global $USERS;
     $data=array();
     $is_aof=0;
+    $type="bo";
     if(isset($post['is_aof'])){
         $is_aof = $post['is_aof'];
     }
-    $query = "INSERT INTO business_officer(user_id, name, business_officer,is_aof) VALUES ('".addslashes($post["user_id"])."', '".addslashes($post["name"])."','".addslashes($post["data"])."','$is_aof')";
+    if(isset($post['type'])){
+        $type = $post['type'];
+    }
+    $query = "INSERT INTO business_officer(user_id, name, business_officer,is_aof,type) VALUES ('".addslashes($post["user_id"])."', '".addslashes($post["name"])."','".addslashes($post["data"])."','$is_aof','$type')";
     $rs=$db->query($query);
     return $rs;
 }
@@ -211,12 +215,12 @@ function edit_business_officer($post){
     $rs=$db->query($query);
     return $rs;
 }
-function get_business_officer($id){
+function get_business_officer($id,$type="bo"){
     include_once('DBClass.php');
     $db = new DBClass();
     //global $USERS;
     $data=array();
-    $query="SELECT * FROM business_officer WHERE  user_id ='$id' ";
+    $query="SELECT * FROM business_officer WHERE  user_id ='$id' and type='$type'";
     $rs=$db->query($query);
     $num_rows=$db->numRows($rs);
     while($row = $db->fetchAssoc($rs)) {
@@ -257,11 +261,11 @@ function del_user_all_officers($uid){
     
 }
 
-function get_business_officer_list($uid=0){
+function get_business_officer_list($uid=0,$type="bo"){
     include_once('DBClass.php');
     $db = new DBClass();
 
-    $query="SELECT * FROM business_officer WHERE  user_id ='$uid' ";
+    $query="SELECT * FROM business_officer WHERE  user_id ='$uid' and type='$type'";
     $rs=$db->query($query);
     $num_rows=$db->numRows($rs);
     $list='';
@@ -291,12 +295,12 @@ function fetch_bo_aof($uid){
     return $row;
 }
 
-function get_business_officer_table($id){
+function get_business_officer_table($id,$type="bo"){
     include_once('DBClass.php');
     $db = new DBClass();
     //global $USERS;
     $data=array();
-    $query="SELECT * FROM business_officer WHERE  user_id ='$id' ";
+    $query="SELECT * FROM business_officer WHERE  user_id ='$id' and type='$type'";
     $rs=$db->query($query);
     $num_rows=$db->numRows($rs);
     $html='';
@@ -305,11 +309,26 @@ function get_business_officer_table($id){
         $html.='<tr>';
         $html.='<td style="width:80%;">'.$row["name"].'</td>';
         $html.='<td style="width:20%;">';
-        $html.='<button type="button" class="btn btn-success edit_business_officer" id="btnEdit-'.$row["id"].'" data-id="'.$row["id"].'" onclick="boe('.$row['id'].')">Edit</button>&nbsp;&nbsp;&nbsp;&nbsp;';
+        $html.='<button type="button" class="btn btn-success edit_business_officer" id="btnEdit-'.$row["id"].'" data-id="'.$row["id"].'"  data-bs-toggle="modal" data-bs-target="#myModal" data-bs-whatever="@mdo" onclick="boe('.$row['id'].')">Edit</button>&nbsp;&nbsp;&nbsp;&nbsp;';
         $html.='<button type="button" class="btn btn-danger" id="btnCancel-'.$row["id"].'" data-id="'.$row["id"].'" onclick="bod('.$row['id'].')">X</button>';
         $html.='</td>';
         $html.='</tr>';
     }
     return $html;
+}
+
+function get_bo_by_name_type($data){
+    include_once('DBClass.php');
+    $db = new DBClass();
+    //global $USERS;
+    //$data=array();
+    $name = $data['name'];
+    $type = $data['type'];
+    $query="SELECT * FROM business_officer WHERE  name ='$name' and type = '$type'";
+    $rs=$db->query($query);
+    $num_rows=$db->numRows($rs);
+    $row=$db->fetchArray($rs);
+    return $row;
+
 }
 ?>

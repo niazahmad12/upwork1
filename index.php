@@ -308,7 +308,7 @@ $business_officer=get_business_officer($uid);
                             <tr>
                                 <td style="width:80%;"><?=$val['name'];?></td>
                                 <td style="width:20%;">
-                                    <button type="button" class="btn btn-primary edit_business_officer" id="btnEdit-<?=$val['id']?>" data-id="<?=$val['id']?>" onclick="boe(<?=$val['id']?>)">Edit</button>
+                                    <button type="button" class="btn btn-primary edit_business_officer" id="btnEdit-<?=$val['id']?>" data-id="<?=$val['id']?>" data-bs-toggle="modal" data-bs-target="#myModal" data-bs-whatever="@mdo" onclick="boe(<?=$val['id']?>)">Edit</button>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <button type="button" class="btn btn-danger" id="btnCancel-<?=$val['id']?>" data-id="<?=$val['id']?>" onclick="bod(<?=$val['id']?>)">X</button>
                                 </td>
@@ -356,10 +356,10 @@ $business_officer=get_business_officer($uid);
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title modal-title-officer">Business Officers</h5>
+                    <h5 class="modal-title" id="modal-title-officer">Business Officers</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body modal-body-add">
+                <div class="modal-body">
                     <?php //include_once('add_officer.php') ?>
                     <div id="divAODialog">
                     <input type="hidden" name="eid" id="eid" value="">
@@ -430,7 +430,24 @@ $business_officer=get_business_officer($uid);
             </div>
        </div>
        <!-- Modal Add Officer End-->
-
+<!-- Modal Business Owner-->
+<div class="modal fade" id="ownerModal" tabindex="-1" aria-labelledby="ownerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Business Owner</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body modal-body-owner">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  id="btnAddOwner">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 
 // $(document).ready(function(){
@@ -476,7 +493,7 @@ $business_officer=get_business_officer($uid);
         var x = document.getElementsByClassName("tab");
         //$("#treasureForm").validate();
         // Exit the function if any field in the current tab is invalid:
-       // if (n == 1 && !validateForm()) return false;
+        if (n == 1 && !validateForm()) return false;
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:
