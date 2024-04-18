@@ -3,6 +3,8 @@ $(document).ready(function(){
 
     $('.datepicker').datepicker();
     $(".exempt").hide();
+    $("#owner_percent").hide();
+    $("#user_type").val('bo');
     $("#foreignFinancialInstitution").change(function(){
        if($('#foreignFinancialInstitution').is(':checked')){
         $("#chkAcc").show();
@@ -35,22 +37,24 @@ $(document).ready(function(){
         var userOption = $("#add_bo").val();
         var uid = $("#uid").val();
         var url ='add_officer2.php';
+        $("#owner_percent").hide();
+        $("#user_type").val('bo');
 
         if(userOption == 'nothing'){
            // console.log(userOption);
         }else if(userOption == 'add_officer'){
             cleanBO();
+            $('#modal-title-officer').text('Add Business Officer');
             //console.log(userOption);
-            $('#modal-title-officer').html('Add Business Officer');
+            //$('#modal-title-officer').html('Add Business Officer');
                $('#myModal').modal("show");
-             //  $('#myModal').on('show.bs.modal', function () {
-               // $('#modal-title-officer').text('Add Business Officer');
-          //});
+                    $('#myModal').on('show.bs.modal', function () {
+                  
+                });
         }else{
-             //url ='edit_officer_dialog.php?id='+userOption;
-
              var url = 'process.ajax.php';
-             // $(".modal-title-officer").val("Update Business Officers");
+             $('#modal-title-officer').text('Update Business Officer');
+
               $.ajax({
                    url: url,
                    dataType: "json",
@@ -63,50 +67,47 @@ $(document).ready(function(){
                    success: function(response)
                    {
                    console.log(response.data);
-                   //alert(response.data)
-                   //$("#dTable").html(response.result);
-                   //console.log(response.data.first_name);
                    $("#first_name").val(response.data.first_name);
-                   $("#eid").val(id);
+                   $("#eid").val(response.data.id);
                    $("#last_name").val(response.data.last_name);
-                   $("#jobTitle").val(response.data.jobTitle);
-                   $("#businessPhoneNumber").val(response.data.businessPhoneNumber);
+                   $("#jobTitle").val(response.data.role);
+                   $("#businessPhoneNumber").val(response.data.phone_number);
                    $("#email").val(response.data.email);
-                   $("#citizenshipCountry").val(response.data.citizenshipCountry);
-                   $("#dateOfBirth").val(response.data.dateOfBirth);
-                   $("#nationalIdentifier").val(response.data.nationalIdentifier);
-                   $("#residencyCountry").val(response.data.residencyCountry);
-                   $("#businessRepresentativeAddress1").val(response.data.businessRepresentativeAddress1);
-                   $("#businessRepresentativeAddress2").val(response.data.businessRepresentativeAddress2);
-                   $("#businessRepresentativeCity").val(response.data.businessRepresentativeCity);
-                   $("#businessRepresentativeState").val(response.data.businessRepresentativeState);
-                   $("#businessRepresentativeState2").val(response.data.businessRepresentativeState2);
-                   $("#businessRepresentativeStateZipCode").val(response.data.businessRepresentativeStateZipCode);
+                   $("#citizenshipCountry").val(response.data.citizenship_country);
+                   $("#dateOfBirth").val(response.data.dob);
+                   $("#nationalIdentifier").val(response.data.scn);
+                   $("#residencyCountry").val(response.data.residency_country);
+                   $("#businessRepresentativeAddress1").val(response.data.address1);
+                   $("#businessRepresentativeAddress2").val(response.data.address2);
+                   $("#businessRepresentativeCity").val(response.data.city);
+                   $("#businessRepresentativeState").val(response.data.state);
+                   $("#businessRepresentativeState2").val(response.data.stat2);
+                   $("#businessOfficerZipCode").val(response.data.zip);
                    }
                });
-            //url ='edit_bo_dialog.php?id='+userOption;
-              //$('.modal-body-edit').load(url,function(){
-                //console.log(userOption);
-                $('#modal-title-officer').html('Update Business Officer');
-                $('#myModal').modal("show");
-           // });
-           // window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+
+               $('#myModal').modal("show");
+                    $('#myModal').on('show.bs.modal', function () {
+    
+                });
+
         }
     });
     $("#add_bn").change(function(){
         var userOption = $("#add_bn").val();
-        var left  = ($(window).width()/2)-(900/2);
-        var top   = ($(window).height()/2)-(600/2);
+        $("#owner_percent").show();
+        $("#user_type").val('bn');
         url ='add_officer_dialog.php';
         if (userOption == 'add_officer'){
-          //  window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
-        //   $('body').load("add_officer_dialog.php #ownerModal",function(){
-        //     $('#ownerModal').modal();
-        //      });
-
-        $('.modal-body-owner').load('add_officer_dialog.php',function(){
-            $('#ownerModal').modal("show");
-        });
+            // $('.modal-body-owner').load('add_officer_dialog.php',function(){
+            //     $('#ownerModal').modal("show");
+            // });
+            $('#modal-title-officer').text('Add Business Owner');
+            $('#myModal').modal("show");
+            //$('#myModal').on('show.bs.modal', function (e) {
+            //$("#modal-title-officer").text("Update Business Officers");
+           // });
+        
         }
     });
 
@@ -136,18 +137,62 @@ $(document).ready(function(){
     });
     $("#btnAddOfficer").click(function(e){
         e.preventDefault();
-       
         var uid = $("#uid").val();
         var eid = $("#eid").val();
         var first_name= $("#first_name").val();
         var last_name= $("#last_name").val();
         var data = $('#divAODialog :input').serialize();
         var url = 'process.ajax.php';
-        var ac="add";
-        if(eid != ''){
-            var ac="edit";
-        }
+        var ac="add_user";
+        var user_type=$("#user_type").val();
 
+       if($("#first_name").val() == ''){
+        alert("please enter first name")
+            return false;
+       }
+       if($("#last_name").val() == ''){
+        alert("please enter last name")
+            return false;
+       }
+  
+       if(user_type == 'bn' && ($("#ownershipPercentage").val() =='' || $("#ownershipPercentage").val()==0)){
+         alert("please enter ownership percentage")
+            return false;
+       }
+       if($("#jobTitle").val() == ''){
+        alert("please enter job title")
+            return false;
+       }
+       if($("#businessPhoneNumber").val() == ''){
+        alert("please enter phone number")
+            return false;
+       }
+       if($("#email").val() == ''){
+        alert("please enter email")
+            return false;
+       }
+
+       if($("#dateOfBirth").val() == ''){
+        alert("please enter date of birth")
+            return false;
+       }
+       if($("#nationalIdentifier").val() == ''){
+        alert("please enter social security number")
+            return false;
+       }
+       if($("#businessRepresentativeAddress1").val() == ''){
+        alert("please enter address1")
+            return false;
+       }
+       if($("#businessRepresentativeCity").val() == ''){
+        alert("please enter city")
+            return false;
+       }
+  
+      
+        // if(eid != ''){
+        //     var ac="edit";
+        // }
         $.ajax({
             url: url,
             dataType: "json",
@@ -158,6 +203,7 @@ $(document).ready(function(){
             "ac":ac,
             "uid":uid,
             "id":eid,
+            "user_type":user_type,
             "first_name":first_name,
             "last_name":last_name,
             "data":data
@@ -200,6 +246,7 @@ $(document).ready(function(){
                     $("#first_name").val('');
                     $("#eid").val('');
                     $("#last_name").val('');
+                    $("#ownershipPercentage").val('');
                     $("#jobTitle").val('');
                     $("#businessPhoneNumber").val('');
                     $("#email").val('');
@@ -213,6 +260,7 @@ $(document).ready(function(){
                    // $("#businessRepresentativeState").val('');
                     $("#businessRepresentativeState2").val('');
                     $("#businessRepresentativeStateZipCode").val('');
+
                     $('.modal-header .btn-close').click();
 
                 }
@@ -276,70 +324,68 @@ document.getElementById(id).addEventListener('input', function (e) {
     e.target.value = '(' +x[1] + ') '+ x[2] + '-' + x[3]
   });
 }
-function boe(id){
+function boe(id,type){
     var uid = $("#uid").val();
-   // var left  = ($(window).width()/2)-(900/2);
-    //var top   = ($(window).height()/2)-(600/2);
-    
-   // var url ='edit_bo_dialog.php?id='+id;
+    $("#owner_percent").show();
+    var url = 'process.ajax.php';
+    $("#user_type").val(type);
 
-   // var url ='edit_officer_dialog.php?id='+id;
-   var url = 'process.ajax.php';
-  // $(".modal-title-officer").val("Update Business Officers");
-   $.ajax({
-        url: url,
-        dataType: "json",
-        type: "POST",
-        async: false,
-        data: {
-        "ac":'get_bo_by_id',
-        "id":id
-        },
-        success: function(response)
-        {
-        console.log(response.data);
-        //alert(response.data)
-        //$("#dTable").html(response.result);
-        //console.log(response.data.first_name);
-        $("#first_name").val(response.data.first_name);
-        $("#eid").val(id);
-        $("#last_name").val(response.data.last_name);
-        $("#jobTitle").val(response.data.jobTitle);
-        $("#businessPhoneNumber").val(response.data.businessPhoneNumber);
-        $("#email").val(response.data.email);
-        $("#citizenshipCountry").val(response.data.citizenshipCountry);
-        $("#dateOfBirth").val(response.data.dateOfBirth);
-        $("#nationalIdentifier").val(response.data.nationalIdentifier);
-        $("#residencyCountry").val(response.data.residencyCountry);
-        $("#businessRepresentativeAddress1").val(response.data.businessRepresentativeAddress1);
-        $("#businessRepresentativeAddress2").val(response.data.businessRepresentativeAddress2);
-        $("#businessRepresentativeCity").val(response.data.businessRepresentativeCity);
-        $("#businessRepresentativeState").val(response.data.businessRepresentativeState);
-        $("#businessRepresentativeState2").val(response.data.businessRepresentativeState2);
-        $("#businessRepresentativeStateZipCode").val(response.data.businessRepresentativeStateZipCode);
-        }
-    });
-
-
-     //  $('.modal-body-edit').load(url,function(){
-        var myModal = document.getElementById('myModal')
-        myModal.addEventListener('show.bs.modal', function (event) {
-        // Button that triggered the modal
-        //var button = event.relatedTarget
-        // Extract info from data-bs-* attributes
-        //var recipient = button.getAttribute('data-bs-whatever')
-        // Update the modal's content.
-        var modalTitle = myModal.querySelector('.modal-title')
-
-        modalTitle.textContent = 'Update Business Officers '
-        });
-
+    if(type == 'bn'){
+        $("#modal-title-officer").text("Update Business Owner");
+        $("#owner_percent").show();
+    }else{
+        $("#modal-title-officer").text("Update Business Officers");
+        $("#owner_percent").hide();
+    }
+        $.ajax({
+                url: url,
+                dataType: "json",
+                type: "POST",
+                async: false,
+                data: {
+                "ac":'get_bo_by_id',
+                "id":id
+                },
+                success: function(response)
+                {
+                //console.log(response.data);
+                    $("#first_name").val(response.data.first_name);
+                    $("#eid").val(id);
+                    $("#last_name").val(response.data.last_name);
+                    $("#ownershipPercentage").val(response.data.ownership_percent);
+                    $("#jobTitle").val(response.data.role);
+                    $("#businessPhoneNumber").val(response.data.phone_number);
+                    $("#email").val(response.data.email);
+                    $("#citizenshipCountry").val(response.data.citizenship_country);
+                    $("#dateOfBirth").val(response.data.dob);
+                    $("#nationalIdentifier").val(response.data.scn);
+                    $("#residencyCountry").val(response.data.residency_country);
+                    $("#businessRepresentativeAddress1").val(response.data.address1);
+                    $("#businessRepresentativeAddress2").val(response.data.address2);
+                    $("#businessRepresentativeCity").val(response.data.city);
+                    $("#businessRepresentativeState").val(response.data.state);
+                    $("#businessRepresentativeState2").val(response.data.stat2);
+                    $("#businessOfficerZipCode").val(response.data.zip);
+                }
+            });
         
-       // $('#myModal').modal("show");
-      // });
+            $('#myModal').on('show.bs.modal', function (e) {
     
-   //window.open(url,'Business Officier',"width=400, height=600, top="+top+", left="+left);
+                
+            })
 
+                // var myModal = document.getElementById('myModal');
+                // myModal.addEventListener('show.bs.modal', function (event) {
+                //     // Button that triggered the modal
+                //     //var button = event.relatedTarget
+                //     // Extract info from data-bs-* attributes
+                //     //var recipient = button.getAttribute('data-bs-whatever')
+                //     // Update the modal's content.
+                //     var modalTitle = myModal.querySelector('.modal-title')
+                //     alert(modalTitle);
+
+                //     modalTitle.textContent = 'Update Business Officers '
+                //     });
 
 }
 

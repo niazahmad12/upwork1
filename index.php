@@ -308,7 +308,7 @@ $business_officer=get_business_officer($uid);
                             <tr>
                                 <td style="width:80%;"><?=$val['name'];?></td>
                                 <td style="width:20%;">
-                                    <button type="button" class="btn btn-primary edit_business_officer" id="btnEdit-<?=$val['id']?>" data-id="<?=$val['id']?>" data-bs-toggle="modal" data-bs-target="#myModal" data-bs-whatever="@mdo" onclick="boe(<?=$val['id']?>)">Edit</button>
+                                    <button type="button" class="btn btn-primary edit_business_officer" id="btnEdit-<?=$val['id']?>" data-id="<?=$val['id']?>" data-bs-toggle="modal" data-bs-target="#myModal" data-bs-whatever="@mdo" onclick="boe(<?=$val['id']?>,'<?=$val['type']?>')">Edit</button>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <button type="button" class="btn btn-danger" id="btnCancel-<?=$val['id']?>" data-id="<?=$val['id']?>" onclick="bod(<?=$val['id']?>)">X</button>
                                 </td>
@@ -363,14 +363,18 @@ $business_officer=get_business_officer($uid);
                     <?php //include_once('add_officer.php') ?>
                     <div id="divAODialog">
                     <input type="hidden" name="eid" id="eid" value="">
+                    <input type="hidden" name="user_type" id="user_type" value="bo">
                         <div class="mb-3">
                                 <label for="firstName" class="form-label">Legal Name</label>
                                 <input  type="text" name="first_name" id="first_name" value="" class="form-control aos" placeholder="First Name"  required><br>
                                 <input  type="text" name="last_name" id="last_name" value="" class="form-control aos" placeholder="Last Name"  required>
                             </div>
+                            <div class="mb-3" id="owner_percent" style="display: none;">
+                                <label for="ownershipPercentage" class="form-label">Ownership percentage</label>
+                                <input  type="text" name="ownershipPercentage" id="ownershipPercentage"  class="form-control" placeholder="%"  value="0" required maxlength="3" style="width: 80px;">                            </div>
                             <div class="mb-3">
                                 <label for="jobTitle" class="form-label">Title / Role</label>
-                                <input  type="text" name="jobTitle" id="jobTitle"  class="form-control aos" placeholder="Last Name"  required>
+                                <input  type="text" name="jobTitle" id="jobTitle"  class="form-control aos" placeholder="Job Role"  required>
                             </div>
                             <div class="mb-3">
                                 <label for="businessPhoneNumber" class="form-label">Business Phone Number</label>
@@ -418,7 +422,7 @@ $business_officer=get_business_officer($uid);
                                 <input type="text" name="businessRepresentativeState2" id="businessRepresentativeState2" class="form-control aos" placeholder="state" style="display: none;"> 
                             </div>
                             <div class="mb-3">
-                                <input type="text" name="businessRepresentativeStateZipCode" id="businessRepresentativeZipCode" class="form-control aos"  placeholder="Zip"  style="width: 300px !important;">
+                                <input type="text" name="businessOfficerZipCode" id="businessOfficerZipCode" class="form-control aos"  placeholder="Zip"  style="width: 300px !important;">
                             </div>
                      </div>
                 </div>
@@ -493,7 +497,7 @@ $business_officer=get_business_officer($uid);
         var x = document.getElementsByClassName("tab");
         //$("#treasureForm").validate();
         // Exit the function if any field in the current tab is invalid:
-        if (n == 1 && !validateForm()) return false;
+       // if (n == 1 && !validateForm()) return false;
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:
@@ -585,6 +589,7 @@ $business_officer=get_business_officer($uid);
             var last_name= $("#ln").val();
             var data = $('#divAO :input').serialize();
             var url = 'process.ajax.php';
+            var is_aof = 1;
 
             $.ajax({
                 url: url,
@@ -592,10 +597,12 @@ $business_officer=get_business_officer($uid);
                 type: "POST",
                 async: false,
                 data: {
-                "ac":'add_off',
+                "ac":'add_user',
+                "user_type":"bo",
                 "uid":uid,
                 "first_name":first_name,
                 "last_name":last_name,
+                "is_aof":is_aof,
                 "data":data
                 },
                 success: function(response)

@@ -208,19 +208,111 @@ function add_business_officer($post){
 function edit_business_officer($post){
     include_once('DBClass.php');
     $db = new DBClass();
-    global $USERS;
-    $id = $post['id'];
-    $current_datetime=date("Y-m-d H:i");
     $query = "UPDATE business_officer SET name='".addslashes($post["name"])."', business_officer='".addslashes($post["data"])."' WHERE id= '$id'";
     $rs=$db->query($query);
     return $rs;
 }
-function get_business_officer($id,$type="bo"){
+function addUser($post){
     include_once('DBClass.php');
     $db = new DBClass();
     //global $USERS;
     $data=array();
-    $query="SELECT * FROM business_officer WHERE  user_id ='$id' and type='$type'";
+    $query = "INSERT INTO business_officer
+    (
+         user_id,
+         type,
+         first_name,
+         last_name,
+         name,
+         is_aof,
+         role,
+         phone_number,
+         email,
+         citizenship_country,
+         dob,
+         scn,
+         residency_country,
+         address1,
+         address2,
+         city,
+         state,
+         zip,
+         ownership_percent,
+         business_officer
+         ) 
+        VALUES (
+        '".addslashes($post["user_id"])."', 
+        '".addslashes($post["type"])."', 
+        '".addslashes($post["first_name"])."',
+        '".addslashes($post["last_name"])."',
+        '".addslashes($post["name"])."',
+        '".addslashes($post["is_aof"])."',
+        '".addslashes($post["role"])."',
+        '".addslashes($post["phone_number"])."',
+        '".addslashes($post["email"])."',
+        '".addslashes($post["citizenship_country"])."',
+        '".addslashes($post["dob"])."',
+        '".addslashes($post["scn"])."',
+        '".addslashes($post["residency_country"])."',
+        '".addslashes($post["address1"])."',
+        '".addslashes($post["address2"])."',
+        '".addslashes($post["city"])."',
+        '".addslashes($post["state"])."',
+        '".addslashes($post["zip"])."',
+        '".addslashes($post["ownership_percent"])."',
+        '".addslashes($post["business_officer"])."'
+        )";
+    $rs=$db->query($query);
+    return $rs;
+}
+function editUser($post){
+    include_once('DBClass.php');
+    $db = new DBClass();
+    $current_datetime=date("Y-m-d H:i");
+    $query = "UPDATE business_officer 
+              SET 
+                    first_name          = '".addslashes($post["first_name"])."',
+                    last_name           = '".addslashes($post["last_name"])."',
+                    name                = '".addslashes($post["name"])."',
+                    role                = '".addslashes($post["role"])."',
+                    phone_number        = '".addslashes($post["phone_number"])."',
+                    email               = '".addslashes($post["email"])."',
+                    citizenship_country = '".addslashes($post["citizenship_country"])."',
+                    dob                 = '".addslashes($post["dob"])."',
+                    scn                 = '".addslashes($post["scn"])."',
+                    residency_country   = '".addslashes($post["residency_country"])."',
+                    address1            = '".addslashes($post["address1"])."',
+                    address2            = '".addslashes($post["address2"])."',
+                    city                = '".addslashes($post["city"])."',
+                    state               = '".addslashes($post["state"])."',
+                    zip                 = '".addslashes($post["zip"])."',
+                    ownership_percent   = '".addslashes($post["ownership_percent"])."',
+                    business_officer    = '".addslashes($post["business_officer"])."'
+                WHERE 
+                    id= '".$post["id"]."'
+                ";
+    $rs=$db->query($query);
+    return $rs;
+}
+function get_business_officer($id){
+    include_once('DBClass.php');
+    $db = new DBClass();
+    //global $USERS;
+    $data=array();
+    $query="SELECT * FROM business_officer WHERE  user_id ='$id' ";
+    $rs=$db->query($query);
+    $num_rows=$db->numRows($rs);
+    while($row = $db->fetchAssoc($rs)) {
+        $data[]=$row;
+    }
+    return $data;
+}
+function get_business_officer_by_type($id,$type="bo"){
+    include_once('DBClass.php');
+    $db = new DBClass();
+    //global $USERS;
+    $data=array();
+    $query="SELECT * FROM business_officer WHERE  user_id ='$id' AND type='$type' ";
     $rs=$db->query($query);
     $num_rows=$db->numRows($rs);
     while($row = $db->fetchAssoc($rs)) {
@@ -295,21 +387,22 @@ function fetch_bo_aof($uid){
     return $row;
 }
 
-function get_business_officer_table($id,$type="bo"){
+function get_business_officer_table($id){
     include_once('DBClass.php');
     $db = new DBClass();
     //global $USERS;
     $data=array();
-    $query="SELECT * FROM business_officer WHERE  user_id ='$id' and type='$type'";
+    $query="SELECT * FROM business_officer WHERE  user_id ='$id' ";
     $rs=$db->query($query);
     $num_rows=$db->numRows($rs);
     $html='';
     while($row = $db->fetchAssoc($rs)) {
         //$data[]=$row;
+        $type=trim($row['type']);
         $html.='<tr>';
         $html.='<td style="width:80%;">'.$row["name"].'</td>';
         $html.='<td style="width:20%;">';
-        $html.='<button type="button" class="btn btn-success edit_business_officer" id="btnEdit-'.$row["id"].'" data-id="'.$row["id"].'"  data-bs-toggle="modal" data-bs-target="#myModal" data-bs-whatever="@mdo" onclick="boe('.$row['id'].')">Edit</button>&nbsp;&nbsp;&nbsp;&nbsp;';
+        $html.='<button type="button" class="btn btn-success edit_business_officer" id="btnEdit-'.$row["id"].'" data-id="'.$row["id"].'"  data-bs-toggle="modal" data-bs-target="#myModal" data-bs-whatever="@mdo" onclick="boe('.$row['id'].',&quot;'.$type.'&quot;)">Edit</button>&nbsp;&nbsp;&nbsp;&nbsp;';
         $html.='<button type="button" class="btn btn-danger" id="btnCancel-'.$row["id"].'" data-id="'.$row["id"].'" onclick="bod('.$row['id'].')">X</button>';
         $html.='</td>';
         $html.='</tr>';

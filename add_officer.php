@@ -54,6 +54,6 @@
                 <input type="text" name="businessRepresentativeState2" class="form-control aos" placeholder="state" style="display: none;"> 
             </div>
             <div class="mb-3">
-                <input type="text" name="businessRepresentativeStateZipCode" class="form-control aos" placeholder="Zip"  style="width: 300px !important;">
+                <input type="text" name="businessRepresentativeZipCode" class="form-control aos" placeholder="Zip"  style="width: 300px !important;">
             </div>
 </div>

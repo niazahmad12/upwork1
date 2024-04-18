@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2024-04-03 15:21:38
+Date: 2024-04-18 12:34:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,17 +22,33 @@ DROP TABLE IF EXISTS `business_officer`;
 CREATE TABLE `business_officer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
+  `type` varchar(50) DEFAULT 'bo',
   `name` varchar(255) DEFAULT NULL,
+  `first_name` varchar(100) DEFAULT '',
+  `last_name` varchar(100) DEFAULT '',
+  `is_aof` tinyint(1) DEFAULT 0,
+  `role` varchar(50) DEFAULT '',
+  `phone_number` varchar(50) DEFAULT '',
+  `email` varchar(100) DEFAULT '',
+  `citizenship_country` varchar(10) DEFAULT '',
+  `dob` varchar(25) DEFAULT '',
+  `scn` varchar(25) DEFAULT '',
+  `residency_country` varchar(10) DEFAULT '',
+  `address1` varchar(255) DEFAULT '',
+  `address2` varchar(255) DEFAULT '',
+  `city` varchar(100) DEFAULT '',
+  `state` varchar(10) DEFAULT '',
+  `zip` varchar(50) DEFAULT '',
+  `ownership_percent` varchar(50) DEFAULT '0',
   `business_officer` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of business_officer
 -- ----------------------------
-INSERT INTO `business_officer` VALUES ('1', '1', 'Abdul', 'a:17:{s:2:\"ac\";s:4:\"edit\";s:2:\"id\";s:1:\"1\";s:10:\"first_name\";s:5:\"Abdul\";s:9:\"last_name\";s:5:\"Gafar\";s:8:\"jobTitle\";s:7:\"Manager\";s:11:\"phoneNumber\";s:10:\"1234567899\";s:5:\"email\";s:22:\"niazahmad1@hotmail.com\";s:18:\"citizenshipCountry\";s:3:\"USA\";s:11:\"dateOfBirth\";s:10:\"01/15/1990\";s:18:\"nationalIdentifier\";s:9:\"123456789\";s:16:\"residencyCountry\";s:3:\"PAK\";s:8:\"address1\";s:55:\"House #374,Block #5,Sector C2,GreenTown Lahore,Pakistan\";s:8:\"address2\";s:0:\"\";s:4:\"city\";s:6:\"Lahore\";s:5:\"state\";s:2:\"AL\";s:6:\"state2\";s:0:\"\";s:7:\"zipCode\";s:5:\"54000\";}', '2024-04-03 14:06:38');
-INSERT INTO `business_officer` VALUES ('2', '1', 'Shufqat', 'a:17:{s:2:\"ac\";s:4:\"edit\";s:2:\"id\";s:1:\"2\";s:10:\"first_name\";s:7:\"Shufqat\";s:9:\"last_name\";s:4:\"Aziz\";s:8:\"jobTitle\";s:7:\"Manager\";s:11:\"phoneNumber\";s:10:\"1234567899\";s:5:\"email\";s:22:\"niazahmad1@hotmail.com\";s:18:\"citizenshipCountry\";s:3:\"USA\";s:11:\"dateOfBirth\";s:10:\"01/15/1990\";s:18:\"nationalIdentifier\";s:9:\"123456789\";s:16:\"residencyCountry\";s:3:\"PAK\";s:8:\"address1\";s:55:\"House #374,Block #5,Sector C2,GreenTown Lahore,Pakistan\";s:8:\"address2\";s:0:\"\";s:4:\"city\";s:6:\"Lahore\";s:5:\"state\";s:2:\"AL\";s:6:\"state2\";s:0:\"\";s:7:\"zipCode\";s:5:\"54000\";}', '2024-04-03 14:07:17');
 
 -- ----------------------------
 -- Table structure for `business_type`
